@@ -12,6 +12,10 @@ data class CartItem(
     @JoinColumn(name = "product_id", nullable = false)
     val product: Product,
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    val user: User,
+
     @Column(nullable = false)
     val quantity: Int
 )
