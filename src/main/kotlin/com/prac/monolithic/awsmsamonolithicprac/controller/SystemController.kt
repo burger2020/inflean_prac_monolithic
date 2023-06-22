@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RestController
 import java.lang.management.ManagementFactory
+import java.net.InetAddress
 import java.time.LocalDateTime
 
 @RestController
@@ -15,6 +16,7 @@ class SystemController {
         mapOf(
             "status" to "OK",
             "message" to "System is healthy",
+            "ipAddress" to InetAddress.getLocalHost().hostAddress,
             "timestamp" to LocalDateTime.now(),
             "cpuUsage" to getCurrentCpuUsage(),
             "branch" to "2_monolithic_cloud",
