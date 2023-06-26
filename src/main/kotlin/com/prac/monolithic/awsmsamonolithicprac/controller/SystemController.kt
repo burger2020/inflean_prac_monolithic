@@ -20,7 +20,7 @@ class SystemController {
             "ipAddress" to InetAddress.getLocalHost().hostAddress,
             "timestamp" to LocalDateTime.now(),
             "cpuUsage" to getCurrentCpuUsage(),
-            "branch" to "2_monolithic_cloud",
+            "branch" to "3_monolithic_storage"
         )
     )
 
