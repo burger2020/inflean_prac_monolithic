@@ -4,17 +4,22 @@ server:
 spring:
   datasource:
     read:
-      jdbc-url: jdbc:postgresql://database-read-replica.c7bqayif57ah.ap-northeast-2.rds.amazonaws.com/ecommerce
-      username: postgres
-      password: postgres
+      jdbc-url: jdbc:postgresql://localhost:5431/test_db
+      username: sanho
+      password: sanho0608
       driverClassName: org.postgresql.Driver
     write:
-      jdbc-url: jdbc:postgresql://database-1.c7bqayif57ah.ap-northeast-2.rds.amazonaws.com/ecommerce
-      username: postgres
-      password: postgres
+      jdbc-url: jdbc:postgresql://localhost:5432/test_db
+      username: sanho
+      password: sanho0608
       driverClassName: org.postgresql.Driver
 
   jpa:
     hibernate:
+
       ddl-auto: update
     show-sql: true
+
+logging:
+  file:
+    name: application.log

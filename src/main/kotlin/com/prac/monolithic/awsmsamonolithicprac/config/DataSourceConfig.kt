@@ -19,11 +19,11 @@ import javax.sql.DataSource
 @EnableJpaRepositories(basePackages = ["com.prac.monolithic.awsmsamonolithicprac.repository"])
 class DataSourceConfig {
 
-    @Bean(name = ["writeDataSource"])
+    @Bean("writeDataSource")
     @ConfigurationProperties(prefix = "spring.datasource.write")
     fun writeDataSource(): DataSource = DataSourceBuilder.create().type(HikariDataSource::class.java).build()
 
-    @Bean(name = ["readDataSource"])
+    @Bean("readDataSource")
     @ConfigurationProperties(prefix = "spring.datasource.read")
     fun readDataSource(): DataSource = DataSourceBuilder.create().type(HikariDataSource::class.java).build()
 
@@ -43,6 +43,7 @@ class DataSourceConfig {
         }
         routingDataSource.setTargetDataSources(datasourceMap)
         routingDataSource.setDefaultTargetDataSource(masterDataSource)
+
         return routingDataSource
     }
 
