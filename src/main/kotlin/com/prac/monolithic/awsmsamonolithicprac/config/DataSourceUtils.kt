@@ -1,6 +1,8 @@
 package com.prac.monolithic.awsmsamonolithicprac.config
 
 import com.zaxxer.hikari.HikariDataSource
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.context.annotation.Configuration
 import java.sql.SQLException
 import javax.sql.DataSource
@@ -10,14 +12,17 @@ class DataSourceUtils(
     private val dataSource: DataSource
 ) {
 
-    fun getDatabaseUrl(): String? {
-        return if (dataSource is RoutingDataSource) {
+    private val log: Logger = LoggerFactory.getLogger(this.javaClass)
+
+    fun getDatabaseUrl() {
+        if (dataSource is RoutingDataSource) {
             val currentDataSource: DataSource = dataSource.determineTargetDataSource()
             try {
-                (currentDataSource as HikariDataSource).jdbcUrl
+                val url = (currentDataSource as HikariDataSource).jdbcUrl
+                log.info("[databaseURL = $url")
             } catch (e: SQLException) {
-                "Unknown"
+                log.error("databaseURL unknown")
             }
-        } else "Unknown"
+        } else log.error("databaseURL unknown")
     }
 }
