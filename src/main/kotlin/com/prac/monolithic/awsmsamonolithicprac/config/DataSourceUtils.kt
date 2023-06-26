@@ -19,7 +19,7 @@ class DataSourceUtils(
             val currentDataSource: DataSource = dataSource.determineTargetDataSource()
             try {
                 val url = (currentDataSource as HikariDataSource).jdbcUrl
-                log.info("[databaseURL = $url")
+                log.info("[databaseURL = $url]")
             } catch (e: SQLException) {
                 log.error("databaseURL unknown")
             }
