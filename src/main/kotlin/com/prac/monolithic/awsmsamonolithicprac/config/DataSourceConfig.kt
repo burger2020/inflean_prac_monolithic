@@ -18,9 +18,6 @@ import javax.sql.DataSource
 @EnableTransactionManagement
 @EnableJpaRepositories(basePackages = ["com.prac.monolithic.awsmsamonolithicprac.repository"])
 class DataSourceConfig {
-    @Primary
-    @Bean(name = ["dataSource"])
-    fun dataSource(): DataSource = RoutingDataSource()
 
     @Bean(name = ["writeDataSource"])
     @ConfigurationProperties(prefix = "spring.datasource.write")
