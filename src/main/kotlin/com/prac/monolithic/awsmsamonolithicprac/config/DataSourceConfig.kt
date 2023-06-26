@@ -23,11 +23,11 @@ class DataSourceConfig {
     fun dataSource(): DataSource = RoutingDataSource()
 
     @Bean(name = ["writeDataSource"])
-    @ConfigurationProperties(prefix = "spring.write.datasource")
+    @ConfigurationProperties(prefix = "spring.datasource.write")
     fun writeDataSource(): DataSource = DataSourceBuilder.create().type(HikariDataSource::class.java).build()
 
     @Bean(name = ["readDataSource"])
-    @ConfigurationProperties(prefix = "spring.read.datasource")
+    @ConfigurationProperties(prefix = "spring.datasource.read")
     fun readDataSource(): DataSource = DataSourceBuilder.create().type(HikariDataSource::class.java).build()
 
     @Bean
@@ -40,8 +40,8 @@ class DataSourceConfig {
         val routingDataSource = RoutingDataSource()
         val datasourceMap: Map<Any, Any> = object : HashMap<Any, Any>() {
             init {
-                put("master", masterDataSource)
-                put("slave", slaveDataSource)
+                put("writer", masterDataSource)
+                put("reader", slaveDataSource)
             }
         }
         routingDataSource.setTargetDataSources(datasourceMap)
