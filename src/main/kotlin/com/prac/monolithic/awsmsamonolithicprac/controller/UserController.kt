@@ -12,6 +12,9 @@ class UserController(
     private val userService: UserService
 ) {
 
+    /**
+     * 새로운 사용자를 등록합니다. Request body에는 email, name, password가 포함되어야 합니다.
+     * */
     @PostMapping("/register")
     fun registerUser(
         @RequestBody user: User
@@ -21,6 +24,9 @@ class UserController(
         return ResponseEntity.ok(registeredUser)
     }
 
+    /**
+     * 사용자 로그인을 수행합니다. Request body에는 email과 password가 포함되어야 합니다.
+     * */
     @PostMapping("/login")
     fun loginUser(
         @RequestBody credentials: Credentials
@@ -30,6 +36,9 @@ class UserController(
         return ResponseEntity.ok(user)
     }
 
+    /**
+     * 주어진 ID를 가진 사용자 정보를 검색합니다.
+     * */
     @GetMapping("/{userId}")
     fun getUser(
         @PathVariable userId: Long
