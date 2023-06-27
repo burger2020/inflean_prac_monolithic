@@ -1,6 +1,5 @@
 package com.prac.monolithic.awsmsamonolithicprac.service
 
-import com.prac.monolithic.awsmsamonolithicprac.config.DataSourceUtils
 import com.prac.monolithic.awsmsamonolithicprac.dto.Credentials
 import com.prac.monolithic.awsmsamonolithicprac.entity.User
 import com.prac.monolithic.awsmsamonolithicprac.error.InvalidCredentialsException
@@ -13,14 +12,12 @@ import org.springframework.transaction.annotation.Transactional
 
 @Service
 class UserService(
-    private val userRepository: UserRepository,
-    private val dataSourceUtils: DataSourceUtils
+    private val userRepository: UserRepository
 ) {
 
 
     @Transactional
     fun registerUser(user: User): User {
-        dataSourceUtils.getDatabaseUrl()
         val isExist = userRepository.findByEmail(user.email)
         if (isExist != null) throw UserAlreadyExistsException("User already exist with email: ${user.email}")
 
@@ -29,7 +26,6 @@ class UserService(
 
     @Transactional(readOnly = true)
     fun findByEmail(credentials: Credentials): User? {
-        dataSourceUtils.getDatabaseUrl()
         val user = userRepository.findByEmail(credentials.email) ?: throw UserNotFoundException("User not found with email: ${credentials.email}")
         if (user.password != credentials.password) throw InvalidCredentialsException("Invalid credentials")
 
@@ -38,7 +34,6 @@ class UserService(
 
     @Transactional(readOnly = true)
     fun findById(id: Long): User? {
-        dataSourceUtils.getDatabaseUrl()
         return userRepository.findById(id).orElseThrow { UserNotFoundException("User not found with id: $id") }
     }
 

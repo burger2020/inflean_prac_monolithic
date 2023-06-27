@@ -7,10 +7,13 @@ import org.springframework.web.bind.annotation.RestController
 import java.lang.management.ManagementFactory
 import java.net.InetAddress
 import java.time.LocalDateTime
+import javax.sql.DataSource
 import kotlin.math.sqrt
 
 @RestController
-class SystemController {
+class SystemController(
+    var dataSource: DataSource
+) {
 
     @GetMapping("/health_check")
     fun healthCheck() = ResponseEntity.ok(
@@ -20,7 +23,8 @@ class SystemController {
             "ipAddress" to InetAddress.getLocalHost().hostAddress,
             "timestamp" to LocalDateTime.now(),
             "cpuUsage" to getCurrentCpuUsage(),
-            "branch" to "3_monolithic_storage"
+            "branch" to "4_monolithic_rds",
+            "connection url" to dataSource.connection.metaData.url
         )
     )
 
