@@ -24,7 +24,7 @@ class SystemController(
             "timestamp" to LocalDateTime.now(),
             "cpuUsage" to getCurrentCpuUsage(),
             "branch" to "4_monolithic_rds",
-            "connection url" to dataSource.connection.metaData.url
+//            "connection url" to dataSource.connection.metaData.url
         )
     )
 
