@@ -13,14 +13,3 @@ spring:
 
       ddl-auto: update
     show-sql: true
-
-logging:
-  file:
-    name: application.log
-  level:
-    root: error
-    com:
-      prac:
-        monolithic:
-          awsmsamonolithicprac:
-            config: info
