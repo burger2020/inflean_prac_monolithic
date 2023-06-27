@@ -13,7 +13,6 @@ class SystemService(
     var connectionDBUrl: String? = null
     fun getDataConnectionUrl(): String {
         if (connectionDBUrl == null) connectionDBUrl = dataSource.connection.metaData.url
-        return connectionDBUrl!!
+        return connectionDBUrl ?: "Unknown"
     }
-
 }
