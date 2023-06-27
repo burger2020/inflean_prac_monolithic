@@ -10,8 +10,10 @@ class SystemService(
     private var dataSource: DataSource,
 ) {
 
+    var connectionDBUrl: String? = null
     fun getDataConnectionUrl(): String {
-        return dataSource.connection.metaData.url
+        if (connectionDBUrl == null) connectionDBUrl = dataSource.connection.metaData.url
+        return connectionDBUrl!!
     }
 
 }
