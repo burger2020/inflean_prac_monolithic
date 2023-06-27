@@ -2,6 +2,7 @@ package com.prac.monolithic.awsmsamonolithicprac.controller
 
 import com.sun.management.OperatingSystemMXBean
 import org.springframework.http.ResponseEntity
+import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RestController
 import java.lang.management.ManagementFactory
@@ -16,6 +17,7 @@ class SystemController(
 ) {
 
     @GetMapping("/health_check")
+    @Transactional(readOnly = true)
     fun healthCheck() = ResponseEntity.ok(
         mapOf(
             "status" to "OK",
@@ -24,7 +26,7 @@ class SystemController(
             "timestamp" to LocalDateTime.now(),
             "cpuUsage" to getCurrentCpuUsage(),
             "branch" to "4_monolithic_rds",
-//            "connection url" to dataSource.connection.metaData.url
+            "connection url" to dataSource.connection.metaData.url
         )
     )
 
