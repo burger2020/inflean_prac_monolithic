@@ -1,5 +1,6 @@
 package com.prac.monolithic.awsmsamonolithicprac.controller
 
+import com.prac.monolithic.awsmsamonolithicprac.service.SystemService
 import com.sun.management.OperatingSystemMXBean
 import org.springframework.http.ResponseEntity
 import org.springframework.transaction.annotation.Transactional
@@ -8,12 +9,11 @@ import org.springframework.web.bind.annotation.RestController
 import java.lang.management.ManagementFactory
 import java.net.InetAddress
 import java.time.LocalDateTime
-import javax.sql.DataSource
 import kotlin.math.sqrt
 
 @RestController
 class SystemController(
-    var dataSource: DataSource
+    private val systemService: SystemService
 ) {
 
     @GetMapping("/health_check")
@@ -26,7 +26,7 @@ class SystemController(
             "timestamp" to LocalDateTime.now(),
             "cpuUsage" to getCurrentCpuUsage(),
             "branch" to "4_monolithic_rds",
-            "connection url" to dataSource.connection.metaData.url
+            "connection url" to systemService.getDataConnectionUrl()
         )
     )
 
