@@ -7,6 +7,7 @@ import com.prac.monolithic.awsmsamonolithicprac.error.InvalidCredentialsExceptio
 import com.prac.monolithic.awsmsamonolithicprac.error.UserAlreadyExistsException
 import com.prac.monolithic.awsmsamonolithicprac.error.UserNotFoundException
 import com.prac.monolithic.awsmsamonolithicprac.repository.UserRepository
+import kotlinx.coroutines.runBlocking
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -39,7 +40,20 @@ class UserService(
     @Transactional(readOnly = true)
     fun findById(id: Long): User? {
         dataSourceUtils.getDatabaseUrl()
+
         return userRepository.findById(id).orElseThrow { UserNotFoundException("User not found with id: $id") }
+    }
+
+    @Transactional(readOnly = true)
+    fun testRdsProxyPerformance() {
+        runBlocking {
+            val ids = listOf(1, 2, 3, 4, 5L)
+            repeat(100) {
+                ids.forEach { id ->
+                    userRepository.findById(id)
+                }
+            }
+        }
     }
 
 }
