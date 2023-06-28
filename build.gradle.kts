@@ -49,6 +49,8 @@ dependencies {
 
     implementation("org.jetbrains.kotlin:kotlin-stdlib:1.6.0")
     implementation("org.jetbrains.kotlin:kotlin-reflect:1.6.0")
+
+    implementation("software.amazon.awssdk:s3:2.17.52")
 }
 
 tasks.withType<KotlinCompile> {

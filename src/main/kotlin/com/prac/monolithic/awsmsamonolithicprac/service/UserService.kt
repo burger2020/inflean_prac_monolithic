@@ -8,13 +8,14 @@ import com.prac.monolithic.awsmsamonolithicprac.error.UserNotFoundException
 import com.prac.monolithic.awsmsamonolithicprac.repository.UserRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import org.springframework.web.multipart.MultipartFile
 
 
 @Service
 class UserService(
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    private val s3Service: S3Service
 ) {
-
 
     @Transactional
     fun registerUser(user: User): User {
@@ -23,6 +24,19 @@ class UserService(
 
         return userRepository.save(user)
     }
+
+    @Transactional
+    fun registerUserImage(image: MultipartFile, userId: Long) {
+        // 이미지 키값 생성
+        val key = "user/$userId/${image.originalFilename}"
+
+        // S3에 이미지 업로드
+        val imageUrl = s3Service.uploadFile(key, image.bytes)
+
+        // imageUrl 저장
+        userRepository.updateUserImageUrl(userId, imageUrl)
+    }
+
 
     @Transactional(readOnly = true)
     fun findByEmail(credentials: Credentials): User? {

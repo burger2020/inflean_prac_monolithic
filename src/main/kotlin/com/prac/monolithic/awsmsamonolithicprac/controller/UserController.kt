@@ -5,6 +5,7 @@ import com.prac.monolithic.awsmsamonolithicprac.entity.User
 import com.prac.monolithic.awsmsamonolithicprac.service.UserService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import org.springframework.web.multipart.MultipartFile
 
 @RestController
 @RequestMapping("/api/users")
@@ -22,6 +23,14 @@ class UserController(
         val registeredUser = userService.registerUser(user)
 
         return ResponseEntity.ok(registeredUser)
+    }
+
+    @PostMapping("/{userId}/image/register")
+    fun registerUserImage(
+        @RequestParam image: MultipartFile,
+        @PathVariable userId: Long
+    ) {
+        userService.registerUserImage(image, userId)
     }
 
     /**

@@ -16,6 +16,9 @@ data class User(
     var name: String,
 
     @Column(nullable = false)
-    var password: String
+    var password: String,
+
+    @Column(nullable = true)
+    var imageUrl: String,
 ) {
 }
