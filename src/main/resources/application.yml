@@ -3,9 +3,9 @@ server:
 
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/test_db
-    username: sanho
-    password: sanho0608
+    url:
+    username:
+    password:
     driver-class-name: org.postgresql.Driver
     hikari:
       connection-timeout: 3000
@@ -25,7 +25,4 @@ cloud:
       bucket: prac-bucket-2023-06-28
     region:
       static: ap-northeast-2
-    credentials:
-      accesskey: AKIAXKWALPLXSCEDPMVO
-      secretkey: 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
 
