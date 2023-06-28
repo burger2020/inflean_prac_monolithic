@@ -41,10 +41,10 @@ class UserService(
     @Transactional(readOnly = true)
     fun testRdsProxyPerformance() {
         runBlocking {
-            val ids = listOf(1, 2, 3, 4, 5L)
-            repeat(500) {
-                ids.forEach { id ->
-                    userRepository.findById(id)
+            val ids = listOf(1, 2, 3, 4, 5L) // 5명의 유저
+            repeat(500) { // 총 500번
+                ids.forEach { id -> // 5번 씩
+                    userRepository.findById(id) // 2500번 조회
                 }
             }
         }
