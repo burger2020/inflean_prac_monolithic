@@ -56,4 +56,11 @@ class UserController(
 
         return ResponseEntity.ok(user)
     }
+
+    @DeleteMapping("/{userId}/image/delete")
+    fun deleteUserImage(
+        @PathVariable userId: Long
+    ) {
+        userService.deleteUserImage(userId)
+    }
 }

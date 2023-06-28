@@ -28,7 +28,7 @@ class UserService(
     @Transactional
     fun registerUserImage(image: MultipartFile, userId: Long) {
         // 이미지 키값 생성
-        val key = "user/$userId/${image.originalFilename}"
+        val key = "user/$userId/${image.originalFilename?.replace(" ", "_")}"
 
         // S3에 이미지 업로드
         val imageUrl = s3Service.uploadFile(key, image.bytes)
@@ -39,7 +39,7 @@ class UserService(
 
 
     @Transactional(readOnly = true)
-    fun findByEmail(credentials: Credentials): User? {
+    fun findByEmail(credentials: Credentials): User {
         val user = userRepository.findByEmail(credentials.email) ?: throw UserNotFoundException("User not found with email: ${credentials.email}")
         if (user.password != credentials.password) throw InvalidCredentialsException("Invalid credentials")
 
@@ -47,8 +47,17 @@ class UserService(
     }
 
     @Transactional(readOnly = true)
-    fun findById(id: Long): User? {
+    fun findById(id: Long): User {
         return userRepository.findById(id).orElseThrow { UserNotFoundException("User not found with id: $id") }
+    }
+
+    @Transactional
+    fun deleteUserImage(userId: Long) {
+        val user = findById(userId)
+        s3Service.deleteFile(user.imageUrl)
+
+        // imageUrl to null
+        userRepository.updateUserImageUrlToNull(userId)
     }
 
 }

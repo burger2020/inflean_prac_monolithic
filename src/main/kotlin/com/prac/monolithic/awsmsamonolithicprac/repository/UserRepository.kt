@@ -13,4 +13,8 @@ interface UserRepository : JpaRepository<User, Long> {
     @Modifying
     @Query("update User u set u.imageUrl = :imageUrl where u.id = :userId")
     fun updateUserImageUrl(userId: Long, imageUrl: String)
+
+    @Modifying
+    @Query("update User u set u.imageUrl = null where u.id = :userId")
+    fun updateUserImageUrlToNull(userId: Long)
 }

@@ -7,7 +7,7 @@ import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider
 import software.amazon.awssdk.core.sync.RequestBody
 import software.amazon.awssdk.regions.Region
 import software.amazon.awssdk.services.s3.S3Client
-import software.amazon.awssdk.services.s3.model.ObjectCannedACL
+import software.amazon.awssdk.services.s3.model.DeleteObjectRequest
 import software.amazon.awssdk.services.s3.model.PutObjectRequest
 
 
@@ -35,5 +35,21 @@ class S3Service(
             RequestBody.fromBytes(bytes)
         )
         return "https://s3.${region}.amazonaws.com/${bucket}/${key}"
+    }
+
+    fun deleteFile(url: String) {
+        val key = extractKeyFromS3Url(url)
+        s3.deleteObject(
+            DeleteObjectRequest.builder()
+                .bucket(bucket)
+                .key(key)
+                .build()
+        )
+    }
+
+    private fun extractKeyFromS3Url(s3Url: String): String? {
+        val regex = "https://s3.*\\.amazonaws\\.com/${bucket}/(.*?)$".toRegex()
+        val matchResult = regex.find(s3Url)
+        return matchResult?.groups?.get(1)?.value
     }
 }
