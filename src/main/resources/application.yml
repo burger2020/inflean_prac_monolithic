@@ -3,7 +3,7 @@ server:
 
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/test
+    url: jdbc:postgresql://localhost:5432/test_db
     username: sanho
     password: sanho0608
     driver-class-name: org.postgresql.Driver
@@ -17,3 +17,15 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
+
+
+cloud:
+  aws:
+    s3:
+      bucket: prac-bucket-2023-06-28
+    region:
+      static: ap-northeast-2
+    credentials:
+      accesskey: AKIAXKWALPLXQBOM3AFN
+      secretkey: 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
+
