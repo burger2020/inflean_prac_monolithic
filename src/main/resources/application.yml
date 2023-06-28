@@ -2,17 +2,6 @@ server:
   port: 80
 
 spring:
-  datasource:
-    read:
-      jdbc-url: jdbc:postgresql://localhost:5431/test_db
-      username: sanho
-      password: sanho0608
-      driverClassName: org.postgresql.Driver
-    write:
-      jdbc-url: jdbc:postgresql://localhost:5432/test_db
-      username: sanho
-      password: sanho0608
-      driverClassName: org.postgresql.Driver
 
   jpa:
     hibernate:
