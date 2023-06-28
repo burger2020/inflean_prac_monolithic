@@ -2,9 +2,7 @@ package com.prac.monolithic.awsmsamonolithicprac.service
 
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
-import software.amazon.awssdk.auth.credentials.AwsBasicCredentials
 import software.amazon.awssdk.auth.credentials.DefaultCredentialsProvider
-import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider
 import software.amazon.awssdk.core.sync.RequestBody
 import software.amazon.awssdk.regions.Region
 import software.amazon.awssdk.services.s3.S3Client
@@ -15,7 +13,9 @@ import software.amazon.awssdk.services.s3.model.PutObjectRequest
 @Service
 class S3Service(
     @Value("\${cloud.aws.region.static}") private val region: String,
-    @Value("\${cloud.aws.s3.bucket}") private val bucket: String
+    @Value("\${cloud.aws.s3.bucket}") private val bucket: String,
+    @Value("\${cloud.aws.cloud-front.domain-name}") private val cloudFrontDomainName: String,
+    @Value("\${cloud.aws.cloud-front.distribution-id}") private val cloudFrontDistributionId: String,
 ) {
 
 
@@ -46,6 +46,10 @@ class S3Service(
                 .key(key)
                 .build()
         )
+    }
+
+    fun convertToCloudFrontUrl(key: String?): String? {
+        return if (key == null) null else "${cloudFrontDomainName}/$key"
     }
 
     private fun extractKeyFromS3Url(s3Url: String): String? {

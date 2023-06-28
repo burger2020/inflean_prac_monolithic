@@ -25,4 +25,7 @@ cloud:
       bucket: prac-bucket-2023-06-28
     region:
       static: ap-northeast-2
+    cloud-front:
+      domain-name: https://d2r5ub9zannwe.cloudfront.net
+      distribution-id: E2K0GS1TYUKKYS
 
