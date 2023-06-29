@@ -5,9 +5,14 @@ import org.springframework.stereotype.Service
 import software.amazon.awssdk.auth.credentials.DefaultCredentialsProvider
 import software.amazon.awssdk.core.sync.RequestBody
 import software.amazon.awssdk.regions.Region
+import software.amazon.awssdk.services.cloudfront.CloudFrontClient
+import software.amazon.awssdk.services.cloudfront.model.CreateInvalidationRequest
+import software.amazon.awssdk.services.cloudfront.model.InvalidationBatch
+import software.amazon.awssdk.services.cloudfront.model.Paths
 import software.amazon.awssdk.services.s3.S3Client
 import software.amazon.awssdk.services.s3.model.DeleteObjectRequest
 import software.amazon.awssdk.services.s3.model.PutObjectRequest
+import java.time.LocalDateTime
 
 
 @Service
@@ -26,7 +31,13 @@ class S3Service(
         .region(Region.of(region)) // Set your region
         .build()
 
+    private val cloudFront: CloudFrontClient = CloudFrontClient.builder()
+        .credentialsProvider(awsCredentials)
+        .region(Region.of(region))
+        .build()
+
     fun uploadFile(key: String, bytes: ByteArray): String {
+        createInvalidation(key)
         s3.putObject(
             PutObjectRequest.builder()
                 .bucket(bucket)
@@ -36,6 +47,22 @@ class S3Service(
             RequestBody.fromBytes(bytes)
         )
         return "https://s3.${region}.amazonaws.com/${bucket}/${key}"
+    }
+
+    fun createInvalidation(key: String) {
+        val invalidationPaths = Paths.builder()
+            .quantity(1)
+            .items(key)
+            .build()
+        val invalidationBatch = InvalidationBatch.builder()
+            .paths(invalidationPaths)
+            .callerReference(LocalDateTime.now().toString())
+            .build()
+        val invalidationRequest = CreateInvalidationRequest.builder()
+            .distributionId(cloudFrontDistributionId)
+            .invalidationBatch(invalidationBatch)
+            .build()
+        cloudFront.createInvalidation(invalidationRequest)
     }
 
     fun deleteFile(url: String) {
