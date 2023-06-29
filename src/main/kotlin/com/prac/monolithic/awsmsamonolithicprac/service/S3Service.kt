@@ -12,7 +12,10 @@ import software.amazon.awssdk.services.cloudfront.model.Paths
 import software.amazon.awssdk.services.s3.S3Client
 import software.amazon.awssdk.services.s3.model.DeleteObjectRequest
 import software.amazon.awssdk.services.s3.model.PutObjectRequest
+import java.net.URLEncoder
+import java.nio.charset.StandardCharsets
 import java.time.LocalDateTime
+import java.util.regex.Pattern
 
 
 @Service
@@ -50,9 +53,10 @@ class S3Service(
     }
 
     fun createInvalidation(key: String) {
+        val encodedPaths = encodeNonAsciiAndSpecialChars("/$key")
         val invalidationPaths = Paths.builder()
             .quantity(1)
-            .items(key)
+            .items(encodedPaths)
             .build()
         val invalidationBatch = InvalidationBatch.builder()
             .paths(invalidationPaths)
@@ -63,6 +67,20 @@ class S3Service(
             .invalidationBatch(invalidationBatch)
             .build()
         cloudFront.createInvalidation(invalidationRequest)
+    }
+
+    private fun encodeNonAsciiAndSpecialChars(input: String): String {
+        val pattern = Pattern.compile("[^\\x00-\\x7F]|[%#]")
+        val matcher = pattern.matcher(input)
+        val stringBuffer = StringBuffer()
+
+        while (matcher.find()) {
+            val replacement = URLEncoder.encode(matcher.group(), StandardCharsets.UTF_8.toString())
+            matcher.appendReplacement(stringBuffer, replacement)
+        }
+
+        matcher.appendTail(stringBuffer)
+        return stringBuffer.toString()
     }
 
     fun deleteFile(url: String) {
