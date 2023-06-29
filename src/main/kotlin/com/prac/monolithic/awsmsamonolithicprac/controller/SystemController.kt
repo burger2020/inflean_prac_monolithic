@@ -25,7 +25,7 @@ class SystemController(
             "ipAddress" to InetAddress.getLocalHost().hostAddress,
             "timestamp" to LocalDateTime.now(),
             "cpuUsage" to getCurrentCpuUsage(),
-            "branch" to "5_1_monolithic_s3",
+            "branch" to "5_2_monolithic_s3_with_cloudfront",
             "aws_region" to region,
             "s3_bucket" to bucket
         )
