@@ -11,7 +11,6 @@ import kotlin.math.sqrt
 
 @RestController
 class SystemController {
-
     @GetMapping("/health_check")
     fun healthCheck() = ResponseEntity.ok(
         mapOf(
@@ -23,7 +22,6 @@ class SystemController {
             "branch" to "2_monolithic_cloud",
         )
     )
-
 
     fun getCurrentCpuUsage(): Double {
         val osBean = ManagementFactory.getOperatingSystemMXBean() as OperatingSystemMXBean
