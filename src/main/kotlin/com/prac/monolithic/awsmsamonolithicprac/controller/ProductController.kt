@@ -14,7 +14,7 @@ class ProductController(
     /**
      * POST - 새 제품을 추가합니다. Request body에는 name, description, price가 포함되어야 합니다.
      * */
-    @PostMapping
+    @PostMapping("/register")
     fun addProduct(
         @RequestBody product: Product
     ): ResponseEntity<Product> {
