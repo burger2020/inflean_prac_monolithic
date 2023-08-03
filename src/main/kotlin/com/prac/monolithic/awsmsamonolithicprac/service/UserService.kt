@@ -19,7 +19,7 @@ class UserService(
     }
 
     @Transactional(readOnly = true)
-    fun findByEmail(credentials: Credentials): User? {
+    fun loginUser(credentials: Credentials): User? {
         val user = userRepository.findByEmail(credentials.email) ?: throw UserNotFoundException("User not found with email: ${credentials.email}")
         if (user.password != credentials.password) throw InvalidCredentialsException("Invalid credentials")
 

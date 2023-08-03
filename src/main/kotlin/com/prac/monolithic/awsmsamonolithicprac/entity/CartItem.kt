@@ -6,7 +6,8 @@ import jakarta.persistence.*
 @Entity
 @Table(name = "cart_items")
 data class CartItem(
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0,
 
     @JsonIgnore
@@ -21,4 +22,8 @@ data class CartItem(
 
     @Column(nullable = false)
     val quantity: Int
-)
+) {
+
+    @Transient
+    var productName: String? = null
+}

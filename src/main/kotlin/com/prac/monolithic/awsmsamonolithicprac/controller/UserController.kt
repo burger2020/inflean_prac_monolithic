@@ -31,7 +31,7 @@ class UserController(
     fun loginUser(
         @RequestBody credentials: Credentials
     ): ResponseEntity<User> {
-        val user = userService.findByEmail(credentials)
+        val user = userService.loginUser(credentials)
 
         return ResponseEntity.ok(user)
     }
