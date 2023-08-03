@@ -26,6 +26,10 @@ class CartService(
 
     @Transactional(readOnly = true)
     fun findAllProducts(userId: Long): List<CartItem> {
-        return cartRepository.findByUserId(userId)
+        val cartItems = cartRepository.findByUserId(userId)
+        cartItems.forEach {
+            it.productName = it.product.name
+        }
+        return cartItems
     }
 }
