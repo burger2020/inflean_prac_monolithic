@@ -21,4 +21,9 @@ data class CartItem(
 
     @Column(nullable = false)
     val quantity: Int
-)
+) {
+
+    @Transient
+    var productName: String? = null
+
+}
